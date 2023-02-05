@@ -6,7 +6,9 @@ app = FastAPI()
 
 origins = [
     "http://localhost:3000",
+    "https://ddos-app.vercel.app/",
     "https://ddos-app-shadreza.vercel.app",
+    "https://ddos-app-git-main-shadreza.vercel.app/"
 ]
 
 app.add_middleware(
