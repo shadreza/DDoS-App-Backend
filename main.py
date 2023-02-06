@@ -14,7 +14,6 @@ app = FastAPI()
 
 pickle_in = open('./classifiersFour.pkl', 'rb')
 classifiers = pickle.load(pickle_in)
-knnClassifier = classifiers[1]
 
 origins = [
     "http://localhost:3000",
