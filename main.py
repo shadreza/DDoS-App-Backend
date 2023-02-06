@@ -4,6 +4,10 @@ import time
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 from pydantic import BaseModel
+from sklearn.ensemble import RandomForestClassifier
+from sklearn.neighbors import KNeighborsClassifier
+from sklearn.neural_network import MLPClassifier
+from sklearn.tree import DecisionTreeClassifier
 
 app = FastAPI()
 
@@ -37,6 +41,10 @@ async def root():
 
 @app.post("/data")
 async def sendDataToBE(data: Data):
+  RandomForestClassifier.predict([[1,1,1]])
+  KNeighborsClassifier.predict([[1,1,1]])
+  MLPClassifier.predict([[1,1,1]])
+  DecisionTreeClassifier.predict([[1,1,1]])
   return data
 
 @app.post("/predict")
