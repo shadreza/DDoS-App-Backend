@@ -3,6 +3,7 @@ import pickle
 import joblib
 import numpy as np
 import pandas as pd
+import tensorflow as tf
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 from pydantic import BaseModel
@@ -105,64 +106,47 @@ async def sendDataToBE(data: Data):
   res = (model.predict(df))
   return res
 
-@app.post("/predict")
+# @app.post("/predict")
 
-async def predictData(data: Data):
-  P = []
-  p = []
+# async def predictData(data: Data):
+#   P = []
+#   p = []
 
-  pickleFiles = ['./Models/Central_Trained_Models/Bi-GRUModel.pkl', './Models/Central_Trained_Models/LSTMModel.pkl', './Models/Central_Trained_Models/GRUModel.pkl', './Models/Central_Trained_Models/Bi-LSTMModel.pkl', ]
-
-
-  model1C = joblib.load(pickleFiles[0])
-  # model2C = joblib.load(pickleFiles[1])
-  # model3C = joblib.load(pickleFiles[2])
-  # model4C = joblib.load(pickleFiles[3])
+#   pickleFiles = ['./Models/Central_Trained_Models/Bi-GRUModel.pkl', './Models/Central_Trained_Models/LSTMModel.pkl', './Models/Central_Trained_Models/GRUModel.pkl', './Models/Central_Trained_Models/Bi-LSTMModel.pkl', ]
 
 
-
-  for feature in impFeatureSet:
-    if(feature == "Idle Min"):
-      p.append(0.0)
-    else:
-      p.append(float(data.data[feature]))
-  P.append(p)
-  print(P)
-
-  X = pd.DataFrame(P, columns=impFeatureSet)
-  # X = np.reshape(X, (X.shape[0], X.shape[1], 1))
-
-
-  #Making predictions
-  # models = [model1C, model2C, model3C, model4C]
-
-  # preds = [model.predict(X) for model in models]
-  # preds=np.array(preds)
-
-  print(X)
-
-
-  # summed = np.sum(preds, axis=0)
-
-  # # argmax across classes
-  # ensemble_prediction = np.argmax(summed, axis=1)
-
-
-  # counts = np.bincount(ensemble_prediction)
-  # max_count_class = np.argmax(counts)
-  # print(max_count_class)
+#   model1C = joblib.load(pickleFiles[0])
+#   model2C = joblib.load(pickleFiles[1])
+#   model3C = joblib.load(pickleFiles[2])
+#   model4C = joblib.load(pickleFiles[3])
 
 
 
-  print ("ok")
-  print ("ok")
-  print ("ok")
-  print ("ok")
-  print ("ok")
-  print ("ok")
-  print ("ok")
-  print ("ok")
-  print ("ok")
-  print ("ok")
-  print ("ok")
-  # res = (model.predict(df))
+#   for feature in impFeatureSet:
+#     if(feature == "Idle Min"):
+#       p.append(0.0)
+#     else:
+#       p.append(float(data.data[feature]))
+#   P.append(p)
+#   print(P)
+
+#   X = pd.DataFrame(P, columns=impFeatureSet)
+
+
+#   #Making predictions
+#   models = [model1C, model2C, model3C, model4C]
+
+#   preds = [model.predict(X) for model in models]
+#   preds=np.array(preds)
+
+
+#   summed = np.sum(preds, axis=0)
+
+#   # # argmax across classes
+#   ensemble_prediction = np.argmax(summed, axis=1)
+
+
+#   counts = np.bincount(ensemble_prediction)
+#   max_count_class = np.argmax(counts)
+#   return(max_count_class)
+
