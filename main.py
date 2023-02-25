@@ -1,18 +1,14 @@
 import pickle
-import time
 
+import joblib
+import numpy as np
+import pandas as pd
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 from pydantic import BaseModel
-from sklearn.ensemble import RandomForestClassifier
-from sklearn.neighbors import KNeighborsClassifier
-from sklearn.neural_network import MLPClassifier
-from sklearn.tree import DecisionTreeClassifier
 
 app = FastAPI()
 
-# pickle_in = open('./classifier.pkl', 'rb')
-# classifier = pickle.load(pickle_in)
 
 pickleFile = './Decision_Tree_model_on_RENN.pkl'
 
@@ -22,8 +18,8 @@ classifiers = pickle.load(pickle_in)
 origins = [
     "http://localhost:3000",
     "https://ddos-gage.vercel.app",
-    # "https://ddos-app-shadreza.vercel.app",
-    # "https://ddos-app-git-main-shadreza.vercel.app"
+    "https://ddos-app-shadreza.vercel.app",
+    "https://ddos-app-git-main-shadreza.vercel.app"
 ]
 
 app.add_middleware(
@@ -34,6 +30,55 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
+
+model = joblib.load(pickleFile)
+pickleFile = './Decision_Tree_model_on_RENN.pkl'
+
+impFeatureSet = [
+    "ACK Flag Count",
+    "Active Max",
+    "Active Min",
+    "Active Std",
+    "Avg Packet Size",
+    "Bwd Header Length",
+    "Bwd IAT Max",
+    "Bwd IAT Mean",
+    "Bwd IAT Min",
+    "Bwd IAT Total",
+    "Bwd Packet Length Max",
+    "Bwd Packet Length Min",
+    "Bwd Packet Length Std",
+    "Bwd Packets/s",
+    "CWE Flag Count",
+    "Down/Up Ratio",
+    "Flow Bytes/s",
+    "Flow Duration",
+    "Flow IAT Mean",
+    "Flow Packets/s",
+    "Fwd Act Data Packets",
+    "Fwd Header Length",
+    "Fwd IAT Mean",
+    "Fwd IAT Min",
+    "Fwd IAT Total",
+    "Fwd Packet Length Max",
+    "Fwd Packet Length Std",
+    "Fwd Seg Size Min",
+    "Idle Max",
+    "Idle Min",
+    "Idle Std",
+    "Init Bwd Win Bytes",
+    "Init Fwd Win Bytes",
+    "Packet Length Min",
+    "Packet Length Std",
+    "Packet Length Variance",
+    "Protocol",
+    "RST Flag Count",
+    "SYN Flag Count",
+    "Subflow Bwd Packets",
+    "Total Fwd Packets",
+    "URG Flag Count"
+  ]
+
 class Data(BaseModel):
     data: object
 
@@ -42,18 +87,82 @@ async def root():
   return {"data" : "السلام عليكم ورحمة الله وبركاته"}
 
 @app.post("/data")
+
 async def sendDataToBE(data: Data):
-  RandomForestClassifier.predict([[1,1,1]])
-  KNeighborsClassifier.predict([[1,1,1]])
-  MLPClassifier.predict([[1,1,1]])
-  DecisionTreeClassifier.predict([[1,1,1]])
-  return data
+
+  P = []
+  p = []
+
+  for feature in impFeatureSet:
+    if(feature == "Idle Min"):
+      p.append(0.0)
+    else:
+      p.append(float(data.data[feature]))
+  P.append(p)
+
+  df = pd.DataFrame(P, columns=impFeatureSet)
+
+  res = (model.predict(df))
+  return res
 
 @app.post("/predict")
+
 async def predictData(data: Data):
-  P = [[data.data['height'], data.data['weight'], data.data['shoeSize']]]
-  result = []
-  for classifier in classifiers: 
-    res = classifier.predict(P)
-    result.append([str(classifier), res[0], time.time()])
-  return result
+  P = []
+  p = []
+
+  pickleFiles = ['./Models/Central_Trained_Models/Bi-GRUModel.pkl', './Models/Central_Trained_Models/LSTMModel.pkl', './Models/Central_Trained_Models/GRUModel.pkl', './Models/Central_Trained_Models/Bi-LSTMModel.pkl', ]
+
+
+  model1C = joblib.load(pickleFiles[0])
+  # model2C = joblib.load(pickleFiles[1])
+  # model3C = joblib.load(pickleFiles[2])
+  # model4C = joblib.load(pickleFiles[3])
+
+
+
+  for feature in impFeatureSet:
+    if(feature == "Idle Min"):
+      p.append(0.0)
+    else:
+      p.append(float(data.data[feature]))
+  P.append(p)
+  print(P)
+
+  X = pd.DataFrame(P, columns=impFeatureSet)
+  # X = np.reshape(X, (X.shape[0], X.shape[1], 1))
+
+
+  #Making predictions
+  # models = [model1C, model2C, model3C, model4C]
+
+  # preds = [model.predict(X) for model in models]
+  # preds=np.array(preds)
+
+  print(X)
+
+
+  # summed = np.sum(preds, axis=0)
+
+  # # argmax across classes
+  # ensemble_prediction = np.argmax(summed, axis=1)
+
+
+  # counts = np.bincount(ensemble_prediction)
+  # max_count_class = np.argmax(counts)
+  # print(max_count_class)
+
+
+
+  print ("ok")
+  print ("ok")
+  print ("ok")
+  print ("ok")
+  print ("ok")
+  print ("ok")
+  print ("ok")
+  print ("ok")
+  print ("ok")
+  print ("ok")
+  print ("ok")
+  # res = (model.predict(df))
