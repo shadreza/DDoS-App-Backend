@@ -14,14 +14,16 @@ app = FastAPI()
 # pickle_in = open('./classifier.pkl', 'rb')
 # classifier = pickle.load(pickle_in)
 
-pickle_in = open('./classifiersFour.pkl', 'rb')
+pickleFile = './Decision_Tree_model_on_RENN.pkl'
+
+pickle_in = open(pickleFile, 'rb')
 classifiers = pickle.load(pickle_in)
 
 origins = [
     "http://localhost:3000",
-    "https://ddos-app.vercel.app",
-    "https://ddos-app-shadreza.vercel.app",
-    "https://ddos-app-git-main-shadreza.vercel.app"
+    "https://ddos-gage.vercel.app",
+    # "https://ddos-app-shadreza.vercel.app",
+    # "https://ddos-app-git-main-shadreza.vercel.app"
 ]
 
 app.add_middleware(
