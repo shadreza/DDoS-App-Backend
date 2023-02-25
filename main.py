@@ -1,4 +1,5 @@
 import pickle
+import random
 
 import joblib
 import numpy as np
@@ -8,8 +9,6 @@ from fastapi.middleware.cors import CORSMiddleware
 from pydantic import BaseModel
 
 app = FastAPI()
-
-
 
 
 origins = [
@@ -98,6 +97,7 @@ def formatString(strValue):
 
 class Data(BaseModel):
     data: list = []
+    param : int = 0
 
 @app.get("/")
 async def root():
@@ -120,6 +120,8 @@ async def sendDataToBE(data: Data):
 
   P = []
 
+  randomness= 2
+
   for row in data.data:
     p = []
     for feature in impFeatureSet:
@@ -127,9 +129,17 @@ async def sendDataToBE(data: Data):
         if name == "":
           p.append(0.0)
         else:
-          p.append(formatString(row[feature]))
+          if(data.param):
+            ran = random.randint(0,randomness)
+            p.append(formatString(row[name])+ ran)
+          else:
+            p.append(formatString(row[name]))
       else:
-        p.append(formatString(row[feature]))
+        if(data.param):
+          ran = random.randint(0,randomness)
+          p.append(formatString(row[feature])+ ran)
+        else:
+          p.append(formatString(row[feature]))
     
     P.append(p)
 
