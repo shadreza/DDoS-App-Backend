@@ -89,9 +89,15 @@ def formatString(strValue):
     if(i >= '0' and i <= '9'):
       s+=i
   if typeOfString == 1:
-    return int(s)
+    if s != '':
+        return int(s)
+    else:
+        return 0
   elif typeOfString == 2:
-    return float(s)
+    if s != '':
+        return float(s)
+    else:
+        return 0.0
   return 0
 
 
